@@ -22,6 +22,12 @@ const question = (texto) => {
   })
 }
 
+// function question(texto) {
+//   return new Promise(function (resolve) {
+//     leitor.question(texto, function (resposta) { resolve(resposta)})
+//   })
+// }
+
 /** Por que criei um método async?
  * Como o readline é assincrono e a função
  * question é uma promise, então ela deve
