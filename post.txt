@@ -1,0 +1,51 @@
+Ao continuar revisando base de programação com a DIO,
+cheguei ao ponto de estudar funções, com e sem retorno,
+com e sem parâmetros. Desta vez o desafio era classificar
+o jogador de acordo com a quantidade de partidas rankeadas
+vencidas x perdidas.
+
+O desafio era simples, ter 2 variáveis que recebem o numVit e 
+o numDerrotas, calcular a diferença entre elas e dentro de
+um switch, ou if's -> elses determinar a categoria do player.
+
+Mas aí pensei: "Por que não deixar esse código mais interativo?
+Vou permitir qu eo usuário digite as quantidades de triunfos
+e a quantidade de derrotas." Então fui lá e utilizei a lib
+<em>readline</em>, agora tenho uma forma de receber os dados do
+usuário. Entretanto, este método é assincrono e preciso de
+alguma forma fazer o código esperar que o usuário digite os
+valores antes de continuar. Para isso, utilizei o conceito de
+<em>Promises</em>, que literalmente significa: <i>promessas</i>,
+assim o código espera o que o usuário irá digiter e depois passa
+para a próxima linha de código.
+
+como ficou meu código?
+
+1º Criar um readline
+```javascript
+import readline from 'readline'
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+```
+Agora já tenho uma constante que tem a função de detectar entrada de dados e devolver ao meu código o que o usuário digitou. Agora preciso criar um método para perguntar os dados ao usuário e salvá-los em variáveis.
+
+```javascript
+const pergunta = (texto) => {
+  return new Promise(resolve => {
+    rl.question(texto, resposta => resolve(resposta))
+  })
+}
+```
+Agora sim, por meio desta constante <i>pergunta</i> posso perguntar ao usuário os dados a serem digitados. Mas como se trata de métodos assincronos, preciso fazer as perguntas dentro de alguma função assincrona por isso criei uma função main() que é assincrona.
+
+```javascript
+async function main(){
+  let qtdVitorias = await pergunta('Digite o número de vitórias: ')
+  let qtdDerrotas = await pergunta('Digite o número de derrotas: ')
+  rl.close()
+}
+```
+Massa! Já tenho os dados digitados pelo usuário, mas esses dados são recebidos no tipo <em>string</em> não consigo proceder com os cálculos para as comparações, então preciso fazer o casting dos dados e fiz isso logo na recepção dos dados para para não ter problemas com tipos de dados

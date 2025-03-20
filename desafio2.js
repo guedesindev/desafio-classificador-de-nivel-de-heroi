@@ -18,10 +18,7 @@ async function main() {
     await question('Digite a quantidade de derrotas: ')
   )
 
-  console.log(`Qtd vitorias: ${qtdVitorias}`)
-
   const saldoVitorias = calcularSaldoVitorias(qtdVitorias, qtdDerrotas)
-  console.log(saldoVitorias)
 
   const classificacao = classificarJogador(saldoVitorias)
 
@@ -33,7 +30,6 @@ async function main() {
 }
 
 function calcularSaldoVitorias(nVit, nDer) {
-  console.log(`CalcularSaldoVitórias: ${nVit} - ${nDer} = ${nVit - nDer}`)
   return nVit - nDer
 }
 
