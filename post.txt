@@ -1,23 +1,9 @@
-Ao continuar revisando base de programação com a DIO,
-cheguei ao ponto de estudar funções, com e sem retorno,
-com e sem parâmetros. Desta vez o desafio era classificar
-o jogador de acordo com a quantidade de partidas rankeadas
-vencidas x perdidas.
+Ao continuar revisando base de programação com a DIO, cheguei ao ponto de estudar funções, com e sem retorno, com e sem parâmetros. Desta vez o desafio era classificar o jogador de acordo com a quantidade de partidas rankeadas vencidas x perdidas 🤯.
 
-O desafio era simples, ter 2 variáveis que recebem o numVit e 
-o numDerrotas, calcular a diferença entre elas e dentro de
-um switch, ou if's -> elses determinar a categoria do player.
+O desafio era simples 😰, ter 2 variáveis que recebem o numVit e o numDerrotas, calcular a diferença entre elas e dentro de
+um switch, ou if's -> elses determinar a categoria do player 🕹️.
 
-Mas aí pensei: "Por que não deixar esse código mais interativo?
-Vou permitir qu eo usuário digite as quantidades de triunfos
-e a quantidade de derrotas." Então fui lá e utilizei a lib
-<em>readline</em>, agora tenho uma forma de receber os dados do
-usuário. Entretanto, este método é assincrono e preciso de
-alguma forma fazer o código esperar que o usuário digite os
-valores antes de continuar. Para isso, utilizei o conceito de
-<em>Promises</em>, que literalmente significa: <i>promessas</i>,
-assim o código espera o que o usuário irá digiter e depois passa
-para a próxima linha de código.
+Mas aí pensei🤔: "Por que não deixar esse código mais interativo? Vou permitir qu eo usuário digite as quantidades de triunfos e a quantidade de derrotas." Então fui lá e utilizei a lib <em>readline</em>, agora tenho uma forma de receber os dados do usuário. Entretanto, este método é assincrono e preciso de alguma forma fazer o código esperar que o usuário digite os valores antes de continuar. Para isso, utilizei o conceito de <em>Promises</em>, que literalmente significa: <i>promessas</i>, assim o código espera o que o usuário irá digiter e depois passa para a próxima linha de código.
 
 como ficou meu código?
 
@@ -48,4 +34,61 @@ async function main(){
   rl.close()
 }
 ```
-Massa! Já tenho os dados digitados pelo usuário, mas esses dados são recebidos no tipo <em>string</em> não consigo proceder com os cálculos para as comparações, então preciso fazer o casting dos dados e fiz isso logo na recepção dos dados para para não ter problemas com tipos de dados
+Massa! Já tenho os dados digitados pelo usuário, mas esses dados são recebidos no tipo <em>string</em> não consigo proceder com os cálculos para as comparações, então preciso fazer o casting dos dados e fiz isso logo na recepção dos dados para para não ter problemas com tipos de dados durante a execução.
+
+```javascript
+async function main(){
+  let qtdVitorias = parseInt(await pergunta('Digite o número de vitórias: '))
+  let qtdDerrotas = parseInt(await pergunta('Digite o número de derrotas: '))
+  rl.close()
+}
+```
+Pronto, agora recebo os dados, o programa espera para receber esses dados antes de continuar a execução e os dados estão no formato de números inteiros. Então vamos para os métodos de calculo do saldo de vitórias.
+
+```javascript
+funtcion calcularSaldoVitorias(nVit, nDer){
+  return nVit - nDer
+}
+```
+
+Este método é muito simples, recebe a quantidade de vitórias e a quantidade de derrotas e apenas retorna a diferença entre elas, afinal só precisamos de um saldo mesmo.
+
+E a classificação? vamos nessa!
+```javascript
+funtion classificarJogador(saldoVitorias){
+  if(saldo <= 10){return 'Ferro'}
+  else if(saldo > 10 && saldo <= 20){return 'Bronze'}
+  else if(saldo > 20 && saldo <= 50){return 'Prata'}
+  else if(saldo > 50 && saldo <= 80){return 'Ouro'}
+  else if(saldo > 80 && saldo <= 90){return 'Diamante'}
+  else if(saldo > 90 && saldo <= 100){return 'Lendário'}
+  else {return 'Imortal'}
+}
+```
+
+Aí você me pergunta: oh garoto, por que não fez isso com um swith? Aí eu te digo: A questão é a comparação com um range de dados, talvez eu não saiba como fazer, mas o switch não lidou bem com isso.
+Outra coisa que você pode perguntar é: Por que não criou uma variável para salvar a classificação e apenas retornar 1 vez essa variável? Eu pensei, já que o método entrará em apenas um bloco de código e já sairá eu não quis ocupar mais um espaço de memória para criar mais uma variável do tipo string para retorná-la no final, mas foi apenas opção mesmo.
+
+Agora para finalizar o desafio só precisei chamar os métodos: calcularSaldoVitorias e classificarJogador no método main e correr para o abraço após chamar o método main, porque se não chamá-lo nada acontecerá 😆.
+
+```javascript
+async function main(){
+  let qtdVitorias = parseInt(await pergunta('Digite o numero de vitorias: '))
+  let qtdDerrotas = parseInt(await pergunta('Digite a quantidade de derrotas'))
+
+  const saldoVitorias = calcularSaldoVitorias(qtdVitorias, qtdDerrotas)
+
+  const classificacao = classificarJogador(saldoVitorias)
+
+  console.log(`O Herói tem saldo de ${saldoVitorias} e está no nível ${classificacao}`)
+
+  rl.close()
+}
+
+main()
+```
+Espero que tenha gostado da jornada 😉.
+
+Caso queira pode acessar o repositório 🗂️ no link: https://github.com/guedesindev/desafio-classificador-de-nivel-de-heroi/blob/main/desafio2.js
+
+Grande abraço e até a próxima 🤗
