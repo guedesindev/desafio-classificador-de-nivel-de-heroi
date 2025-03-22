@@ -1,7 +1,9 @@
 import readline from 'readline'
 
 class Heroi {
-  constructor(tipo) {
+  constructor(nome, idade, tipo) {
+    this.nome = nome
+    this.idade = idade
     this.tipo = tipo
     this.ataque = ''
   }
@@ -36,12 +38,21 @@ const question = (item) => {
     rl.question(item, (resposta) => resolve(resposta))
   })
 }
+
+//Dados para criação do herói
+let nome = undefined
+let idade = undefined
 let tipoHeroi = undefined
 const tiposHerois = {
   1: 'mago',
   2: 'guerreiro',
   3: 'monge',
   4: 'ninja'
+}
+
+async function solicitarDadosBasicos() {
+  nome = await question('Digite um nome para teu herói: ')
+  idade = await question('Qual a idade do herói? ')
 }
 
 async function criarHeroi() {
@@ -61,13 +72,14 @@ async function criarHeroi() {
 
 async function main() {
   //Enquanto o usuário não selecionar uma opção válida a aplicação sempre pedirá uma opção válida.
+  await solicitarDadosBasicos()
   do {
     await criarHeroi()
   } while (!tipoHeroi)
-    
+
   //Criar um novo heroi de acordo com a escolha do usuário
   //Instância da classe Heroi
-  const newHero = new Heroi(tipoHeroi)
+  const newHero = new Heroi(nome, idade, tipoHeroi)
   newHero.definirAtaque() //Definição do tipo de ataque do herói de acordo com a escolha do usuário
   console.log(newHero.atacar()) //Exibição da mensagem do tipo de herói e o ataque desferido.
   rl.close()
