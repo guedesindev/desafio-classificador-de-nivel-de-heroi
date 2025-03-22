@@ -1,3 +1,5 @@
+import readline from 'readline'
+
 class Heroi {
   constructor(tipo) {
     this.tipo = tipo
@@ -13,6 +15,8 @@ class Heroi {
       this.ataque = 'artes marciais'
     } else if (this.tipo === 'ninja') {
       this.ataque = 'shiriken'
+    } else {
+      return
     }
   }
 
@@ -21,11 +25,52 @@ class Heroi {
   }
 }
 
-const guerreiro = new Heroi('guerreiro')
+//Criando o coletor de tipo de herói que o usuário quer criar
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
-guerreiro.definirAtaque()
-console.log(guerreiro.atacar())
+const question = (item) => {
+  return new Promise((resolve) => {
+    rl.question(item, (resposta) => resolve(resposta))
+  })
+}
+let tipoHeroi = undefined
+const tiposHerois = {
+  1: 'mago',
+  2: 'guerreiro',
+  3: 'monge',
+  4: 'ninja'
+}
 
-const mago = new Heroi('mago')
-mago.definirAtaque()
-console.log(mago.atacar())
+async function criarHeroi() {
+  //Solicitar tipo de Heroi que o usuário quer criar
+  console.log('Escolha o tipo de heroi que deseja criar:')
+  //Opções de heróis
+  for (let tipo in tiposHerois) {
+    console.log(tipo + ' para ' + tiposHerois[tipo])
+  }
+
+  //Recebendo a opção de herói para criar
+  let opcao = parseInt(await question('Digite sua opção: '))
+
+  //Salvando o tipo de heroi de acordo com a escolha do usuário
+  tipoHeroi = tiposHerois[opcao]
+}
+
+async function main() {
+  //Enquanto o usuário não selecionar uma opção válida a aplicação sempre pedirá uma opção válida.
+  do {
+    await criarHeroi()
+  } while (!tipoHeroi)
+    
+  //Criar um novo heroi de acordo com a escolha do usuário
+  //Instância da classe Heroi
+  const newHero = new Heroi(tipoHeroi)
+  newHero.definirAtaque() //Definição do tipo de ataque do herói de acordo com a escolha do usuário
+  console.log(newHero.atacar()) //Exibição da mensagem do tipo de herói e o ataque desferido.
+  rl.close()
+}
+
+main()
